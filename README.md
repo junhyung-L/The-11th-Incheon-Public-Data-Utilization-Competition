@@ -94,12 +94,13 @@
 
 ## 주요 파일
 
-- `notebooks/경사도계산.ipynb` : 도로별 평균 경사도 계산 (최종본)  
-- `notebooks/경사.ipynb` : 경사도 계산 실험/축약본  
-- `notebooks/노인낙상.ipynb` : 고령자 낙상 통계 분석  
-- `notebooks/조도_날씨.ipynb` : 날씨/조도 데이터 전처리 및 매칭  
-- `notebooks/위험도계산_지도 시각화.ipynb` : 낙상위험 점수 계산 + 지도 출력  
-- `maps/fall_risk_map.html` : 최종 낙상위험 지도 (Folium 결과물)  
-- `reports/fallin_incheon_open_data_20250528_kk.pdf` : 대회 제출 보고서  
+- `notebooks/경사도계산.ipynb` : [도로별 평균 경사도 계산 (최종본)](./notebooks/경사도계산.ipynb)  
+- `notebooks/경사.ipynb` : [경사도 계산 실험/축약본](./notebooks/경사.ipynb)  
+- `notebooks/노인낙상.ipynb` : [고령자 낙상 통계 분석](./notebooks/노인낙상.ipynb)  
+- `notebooks/조도_날씨.ipynb` : [날씨/조도 데이터 전처리 및 매칭](./notebooks/조도_날씨.ipynb)  
+- `notebooks/위험도계산_지도 시각화.ipynb` : [낙상위험 점수 계산 + 지도 출력](./notebooks/위험도계산_지도 시각화.ipynb)  
+- `maps/fall_risk_map.html` : [최종 낙상위험 지도 (Folium 결과물)](./maps/fall_risk_map.html)  
+- `reports/fallin_incheon_open_data.pdf` : [대회 제출 보고서](./reports/fallin_incheon_open_data.pdf)  
+
 
 ---
