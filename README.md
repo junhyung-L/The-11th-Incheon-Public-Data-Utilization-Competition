@@ -37,7 +37,9 @@
 3. **안전 경로 탐색**  
    - 위험가중치를 반영해 “최단 거리” 대신 “최소 위험 경로” 제시  
 4. **서비스 설계**  
-   - 보호자 알림, 낙상 예방 콘텐츠 제공 등 실생활 서비스로 확장 가능성 검증  
+   - 보호자 알림, 낙상 예방 콘텐츠 제공 등 실생활 서비스로 확장 가능성 검증
+  
+![서비스프로토타입 이미지](images/서비스프로토타입_이미지.png)  
 
 ### 프로젝트 수행 내용
 - **데이터 수집·정제**: 인천시 보행로/등고선, 도로 조도 CSV, 기상청 API, KOSIS 노인 통계 확보 및 정제  
@@ -85,6 +87,9 @@
 - 위험지수 산정 근거 확보  
 
 ### 5. 지도 시각화 (`fall_risk_map.html`)
+
+![지도_시각화](images/지도_시각화.png) 
+
 - Folium 기반 인터랙티브 지도:contentReference[oaicite:0]{index=0}  
 - OpenStreetMap Tile + GeoJSON Layer  
 - Tooltip: `"낙상 위험도: 낮음/보통/높음"` 표시  
@@ -98,7 +103,7 @@
 - `notebooks/경사.ipynb` : [경사도 계산 실험/축약본](./notebooks/경사.ipynb)  
 - `notebooks/노인낙상.ipynb` : [고령자 낙상 통계 분석](./notebooks/노인낙상.ipynb)  
 - `notebooks/조도_날씨.ipynb` : [날씨/조도 데이터 전처리 및 매칭](./notebooks/조도_날씨.ipynb)  
-- `notebooks/위험도계산_지도 시각화.ipynb` : [낙상위험 점수 계산 + 지도 출력](./notebooks/위험도계산_지도 시각화.ipynb)
+- `notebooks/위험도계산_지도 시각화.ipynb` : [낙상위험 점수 계산 + 지도 출력](./notebooks/위험도계산_지도시각화.ipynb)
 - `reports/fallin_incheon_open_data.pdf` : [대회 제출 보고서](./reports/fallin_incheon_open_data.pdf)  
 
 
