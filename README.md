@@ -31,7 +31,7 @@ As society enters a super-aged phase, elderly fall accidents are becoming a crit
 
 ## 🛠️ Project Structure & Evolution
 
-This project demonstrates the full lifecycle of a data science project, from exploratory analysis to production-ready code.
+This project demonstrates the full lifecycle of a data science project, from exploratory analysis to a **production-ready modular package**.
 
 ### 1. Exploratory Data Analysis (Jupyter Notebooks)
 We analyzed all notebooks in the repository to understand the core logic and data processing steps:
@@ -40,11 +40,14 @@ We analyzed all notebooks in the repository to understand the core logic and dat
 - `위험도계산_지도시각화.ipynb`: Comprehensive risk score calculation and Folium prototype.
 - `경사.ipynb` & `경사도계산.ipynb`: Slope calculation from contour lines.
 
-### 2. Production Pipeline (Structured Python Script)
-- **`gis_risk_analysis.py`**: We extracted and refactored the fragmented logic from the notebooks into a professional, object-oriented (OOP) pipeline.
-  - Automated data loading, CRS conversion, real-time weather fetching, and risk calculation.
-  - Added robust error handling, logging, and fallback mechanisms for API failures.
-  - This demonstrates the ability to bridge the gap between EDA and production software.
+### 2. Production Pipeline (Modular Python Package)
+To demonstrate production-grade software engineering skills, we refactored the notebook logic into a structured Python package:
+- **`main.py`**: The central orchestrator that runs the full pipeline.
+- **`src/`**: Core modules containing specialized classes.
+  - `data_loader.py`: Handles loading shapefiles and CRS conversion.
+  - `weather.py`: Handles KMA API integration and fallbacks.
+  - `risk_calculator.py`: Implements the multi-variable heuristic risk model.
+  - `map_visualizer.py`: Generates the interactive Folium map.
 
 ---
 
@@ -71,16 +74,16 @@ pip install pandas geopandas folium requests xmltodict
 ```
 
 ### Execution
-Run the production pipeline to generate the interactive map:
+Run the production pipeline:
 ```bash
-python gis_risk_analysis.py
+python main.py
 ```
 *This will generate `fall_risk_visualization.html`. Open it in any browser to view the interactive map.*
 
 ---
 
 ## 📈 Impact & Future Work
-- **Social Value:** Provides actionable data for local governments to prioritize safety facility installations (e.g., non-slip mats, streetlights) and snow removal.
+- **Social Value:** Provides actionable data for local governments to prioritize safety facility installations and snow removal.
 - **Scalability:** The framework can be extended to real-time navigation apps for vulnerable populations.
 
 ---
