@@ -1,90 +1,99 @@
-# 📍 11th Incheon Public Data Utilization Competition
-## Fallin: Elderly Fall Risk Prediction & Safe Route Guidance Service
+# 📍 11th Incheon Public Data Utilization Competition: Excellence Award 🏆
 
-> **"Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."**
+This repository contains the project for the **'11th Incheon Public Data Utilization Competition'** focused on safety for the elderly.
 
-As society enters a super-aged phase, elderly fall accidents are becoming a critical social issue. This project moves beyond simple shortest-path navigation to propose a **"Minimum Risk Route"** service. By fusing Incheon city's GIS terrain data, street illuminance (lux), and real-time weather conditions, we calculate a precise **Fall Risk Score** to guide elderly pedestrians safely.
-
----
-
-## 🚀 Key Achievements
-- **Host:** Incheon Metropolitan City
-- **Core Innovation:** 
-  - Calculated precise road-level slope degrees using GIS spatial analysis.
-  - Designed a multi-variable heuristic risk model integrating real-time weather APIs.
-  - Developed an interactive risk heatmap and visualization using Folium.
-- **Data Utilized:** Public Data Portal (Pedestrian paths, Contour lines), Korea Meteorological Administration (KMA) Short-term Forecast API, Street Illuminance (CSV).
+The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Incheon city's GIS terrain data, street illuminance (lux), and real-time weather conditions to calculate a precise **Fall Risk Score** for elderly pedestrians.
 
 ---
 
-## 🖼️ Visuals & Prototypes
+## 📌 1. Problem Definition (문제 정의)
 
-### 1. Service Prototype
-![Service Prototype](images/서비스프로토타입_이미지.png)
-*Figure 1: Concept and UI flow for the Fallin service.*
+- **Background**: As society enters a super-aged phase, elderly fall accidents are becoming a critical social issue. Traditional navigation services only offer the shortest path, ignoring safety hazards like steep slopes or slippery roads.
+- **Objective**: To develop a data-driven service that calculates and visualizes fall risks on pedestrian paths, providing safer routes for the elderly.
+- **Vision**: "Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."
 
-### 2. Risk Map Visualization
-![Map Visualization](images/지도_시각화.png)
-*Figure 2: Interactive map showing high-risk areas based on terrain and weather.*
+## 📊 2. Data Acquisition & Preprocessing (데이터 수집 및 전처리)
 
----
+- **Multi-Source Data Fusion**:
+  - **GIS Data**: Pedestrian paths and contour lines from the Public Data Portal.
+  - **Weather Data**: Real-time short-term forecast (Temperature, Precipitation, Humidity) from the Korea Meteorological Administration (KMA) API.
+  - **Illuminance Data**: Streetlight and road brightness data (CSV).
+- **Refactored Module**: `src/data_loader.py`
+  - Handles loading of massive Shapefiles and ensures Coordinate Reference System (CRS) conversion to EPSG:4326 for visualization.
 
-## 🛠️ Project Structure & Evolution
+## 🔬 3. Risk Modeling & Methodology (위험도 모델링 및 방법론)
 
-This project demonstrates the full lifecycle of a data science project, from exploratory analysis to a **production-ready modular package**.
-
-### 1. Exploratory Data Analysis (Jupyter Notebooks)
-We analyzed all notebooks in the repository to understand the core logic and data processing steps:
-- `노인낙상.ipynb`: GIS spatial analysis and pedestrian path data refinement.
-- `조도_날씨.ipynb`: KMA API integration and illuminance data mapping.
-- `위험도계산_지도시각화.ipynb`: Comprehensive risk score calculation and Folium prototype.
-- `경사.ipynb` & `경사도계산.ipynb`: Slope calculation from contour lines.
-
-### 2. Production Pipeline (Modular Python Package)
-To demonstrate production-grade software engineering skills, we refactored the notebook logic into a structured Python package:
-- **`main.py`**: The central orchestrator that runs the full pipeline.
-- **`src/`**: Core modules containing specialized classes.
-  - `data_loader.py`: Handles loading shapefiles and CRS conversion.
-  - `weather.py`: Handles KMA API integration and fallbacks.
-  - `risk_calculator.py`: Implements the multi-variable heuristic risk model.
-  - `map_visualizer.py`: Generates the interactive Folium map.
-
----
-
-## 📊 Analytical Methodology
-
-### Multi-Variable Risk Scoring Model
-The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors.
+- **Multi-Variable Risk Scoring Model**:
+  The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors.
 
 | Category | Variable | Condition / Weight | Description |
 | :--- | :--- | :---: | :--- |
-| **Terrain** | Slope Degree | > 7°: +5 points<br>> 5°: +3 points | Steep slopes increase fall probability. |
+| **Terrain** | Slope Degree | > 7°: +5 points<br>> 5°: +3 points | Calculated from contour lines using DEM interpolation. |
 | **Environment** | Illuminance (Lux) | Low / Dark: +1 point | Poor visibility increases risk. |
 | **Weather** | Temperature (TMP) | ≤ 0°C: +2 points | Risk of freezing/black ice. |
 | | Precipitation (PTY) | Rain/Snow: +2 points | Slippery road surfaces. |
 | | Snowfall (SNO) | > 0cm: +2 points | Walking obstruction. |
 
+- **Refactored Module**: `src/risk_calculator.py`
+  - Implements the heuristic risk scoring algorithm derived from exploratory analysis.
+
+## 🖼️ 4. Visualization & Prototype (시각화 및 프로토타입)
+
+- **Interactive Risk Map**:
+  - Developed an interactive risk heatmap using **Folium**.
+  - High-risk areas are marked with specific pins to guide policy decisions and pedestrian awareness.
+- **Refactored Module**: `src/map_visualizer.py`
+
+### Service Prototype
+![Service Prototype](images/서비스프로토타입_이미지.png)
+*Figure 1: Concept and UI flow for the Fallin service.*
+
+### Risk Map Visualization
+![Map Visualization](images/지도_시각화.png)
+*Figure 2: Interactive map showing high-risk areas.*
+
+## 🏁 5. Conclusion & Business Impact (결론 및 비즈니스 임팩트)
+
+- **Outcome**: Successfully mapped the fall risk scores across Incheon's pedestrian network.
+- **Analytical ROI**:
+  - **Social Value**: Provides actionable data for local governments to prioritize safety facility installations (e.g., non-slip mats, streetlights) and snow removal.
+  - **Scalability**: The framework can be extended to real-time navigation apps for vulnerable populations.
+
 ---
 
-## 💻 How to Run
+## 📁 Repository Structure
 
-### Prerequisites
-```bash
-pip install pandas geopandas folium requests xmltodict
+```text
+├── notebooks/                  # Original exploratory Jupyter notebooks
+│   ├── 노인낙상.ipynb
+│   ├── 조도_날씨.ipynb
+│   ├── 위험도계산_지도시각화.ipynb
+│   ├── 경사.ipynb
+│   └── 경사도계산.ipynb
+├── src/                        # Refactored production-ready source code
+│   ├── data_loader.py          # GIS data loading and CRS conversion
+│   ├── weather.py              # KMA API integration
+│   ├── risk_calculator.py      # Multi-variable risk model
+│   └── map_visualizer.py       # Folium heatmap generation
+├── images/                     # Project screenshots and diagrams
+├── data/                       # GIS Shapefiles (ignored if too large)
+└── main.py                     # Master pipeline runner
 ```
 
-### Execution
-Run the production pipeline:
-```bash
-python main.py
-```
-*This will generate `fall_risk_visualization.html`. Open it in any browser to view the interactive map.*
+## ⚙️ How to Run
+
+1. Install dependencies:
+   ```bash
+   pip install pandas geopandas folium requests xmltodict
+   ```
+2. Run the full pipeline:
+   ```bash
+   python main.py
+   ```
+
+## 👥 Contributors
+
+- **Junhyung L.** (Project Lead / Data Analyst)
 
 ---
-
-## 📈 Impact & Future Work
-- **Social Value:** Provides actionable data for local governments to prioritize safety facility installations and snow removal.
-- **Scalability:** The framework can be extended to real-time navigation apps for vulnerable populations.
-
----
-*This repository has been refactored and documented by Antigravity (Advanced AI Coding Assistant) to meet the standards of a top-tier Data Analyst portfolio.*
+*Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L).*
