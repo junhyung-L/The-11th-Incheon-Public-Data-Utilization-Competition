@@ -1,58 +1,69 @@
-# 📍 2025 인천광역시 공공데이터 활용 경진대회
-## 폴린(Fallin): 고령자 낙상 위험 예측 및 안전 경로 안내 서비스
+# 📍 11th Incheon Public Data Utilization Competition
+## Fallin: Elderly Fall Risk Prediction & Safe Route Guidance Service
 
-> **"단순한 최단 거리가 아닌, 어르신들의 안전을 위한 '최소 위험 경로'를 제시합니다."**
+> **"Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."**
 
-초고령 사회 진입에 따라 급증하는 노인 낙상 사고를 예방하기 위해, 인천시의 지형, 조도, 실시간 기상 데이터를 융합하여 정밀한 낙상 위험 지표를 산출하고 이를 시각화하는 데이터 기반 공간정보 서비스 프로젝트입니다.
-
----
-
-## 🚀 Key Achievements (주요 성과)
-- **주최:** 인천광역시
-- **핵심 성과:** 
-  - GIS 공간 분석을 활용한 도로별 정밀 경사도 산출.
-  - 실시간 기상 API 연동 및 다중 변수 기반 낙상 위험도 휴리스틱 모델 설계.
-  - Folium을 활용한 인터랙티브 위험 지도(Heatmap) 구현.
-- **활용 데이터:** 공공데이터포털(보행로, 등고선), 기상청 초단기예보 API, 가로등 조도 데이터.
+As society enters a super-aged phase, elderly fall accidents are becoming a critical social issue. This project moves beyond simple shortest-path navigation to propose a **"Minimum Risk Route"** service. By fusing Incheon city's GIS terrain data, street illuminance (lux), and real-time weather conditions, we calculate a precise **Fall Risk Score** to guide elderly pedestrians safely.
 
 ---
 
-## 🛠️ Project Structure & Evolution (프로젝트 구조 및 발전)
-
-본 프로젝트는 탐색적 데이터 분석(EDA) 단계에서 프로덕션 파이프라인 구축 단계로 발전시켰습니다.
-
-### 1. Exploratory Data Analysis (Notebooks)
-- `노인낙상.ipynb`: GIS 데이터를 활용한 공간 분석 및 보행로 데이터 정제.
-- `조도_날씨.ipynb`: 기상청 API 연동 및 조도 데이터 매핑.
-- `위험도계산_지도시각화.ipynb`: 종합 위험도 산출 및 Folium 기반 시각화 프로토타입.
-
-### 2. Production Pipeline (Python Script)
-- **`gis_risk_analysis.py`**: 노트북의 파편화된 로직을 객체지향(OOP) 구조로 통합한 **프로덕션 파이프라인**입니다.
-  - `FallRiskPredictor` 클래스를 통해 데이터 로드, 실시간 날씨 반영, 위험도 계산, 지도 생성을 자동화합니다.
-  - 에러 핸들링, 로깅 시스템, API 실패 시 Fallback 로직을 추가하여 안정성을 확보했습니다.
+## 🚀 Key Achievements
+- **Host:** Incheon Metropolitan City
+- **Core Innovation:** 
+  - Calculated precise road-level slope degrees using GIS spatial analysis.
+  - Designed a multi-variable heuristic risk model integrating real-time weather APIs.
+  - Developed an interactive risk heatmap and visualization using Folium.
+- **Data Utilized:** Public Data Portal (Pedestrian paths, Contour lines), Korea Meteorological Administration (KMA) Short-term Forecast API, Street Illuminance (CSV).
 
 ---
 
-## 📊 Analytical Innovation (분석 방법론)
+## 🖼️ Visuals & Prototypes
 
-### 1. 다중 변수 위험도 모델링 (Multi-variable Risk Model)
-낙상 위험도는 지형적 요인과 환경적 요인을 결합하여 동적으로 산출됩니다.
+### 1. Service Prototype
+![Service Prototype](images/서비스프로토타입_이미지.png)
+*Figure 1: Concept and UI flow for the Fallin service.*
 
-| 분류 | 변수 | 가중치/조건 | 설명 |
+### 2. Risk Map Visualization
+![Map Visualization](images/지도_시각화.png)
+*Figure 2: Interactive map showing high-risk areas based on terrain and weather.*
+
+---
+
+## 🛠️ Project Structure & Evolution
+
+This project demonstrates the full lifecycle of a data science project, from exploratory analysis to production-ready code.
+
+### 1. Exploratory Data Analysis (Jupyter Notebooks)
+We analyzed all notebooks in the repository to understand the core logic and data processing steps:
+- `노인낙상.ipynb`: GIS spatial analysis and pedestrian path data refinement.
+- `조도_날씨.ipynb`: KMA API integration and illuminance data mapping.
+- `위험도계산_지도시각화.ipynb`: Comprehensive risk score calculation and Folium prototype.
+- `경사.ipynb` & `경사도계산.ipynb`: Slope calculation from contour lines.
+
+### 2. Production Pipeline (Structured Python Script)
+- **`gis_risk_analysis.py`**: We extracted and refactored the fragmented logic from the notebooks into a professional, object-oriented (OOP) pipeline.
+  - Automated data loading, CRS conversion, real-time weather fetching, and risk calculation.
+  - Added robust error handling, logging, and fallback mechanisms for API failures.
+  - This demonstrates the ability to bridge the gap between EDA and production software.
+
+---
+
+## 📊 Analytical Methodology
+
+### Multi-Variable Risk Scoring Model
+The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors.
+
+| Category | Variable | Condition / Weight | Description |
 | :--- | :--- | :---: | :--- |
-| **지형** | 경사도 (Slope) | > 7°: +5점<br>> 5°: +3점 | 급경사 지역 가중치 부여 |
-| **환경** | 조도 (Lux) | 어두움/낮음: +1점 | 야간 및 음영 지역 위험도 반영 |
-| **기상** | 기온 (TMP) | ≤ 0°C: +2점 | 결빙 위험 |
-| | 강수형태 (PTY) | 비/눈 등: +2점 | 노면 미끄럼 |
-| | 적설 (SNO) | > 0cm: +2점 | 보행 장애 |
-
-### 2. 인터랙티브 공간 시각화
-- **Folium Heatmap**: 위험 점수를 기반으로 인천시 전역의 위험도를 한눈에 파악할 수 있는 히트맵을 제공합니다.
-- **High-Risk Markers**: 고위험군(High Risk) 지역을 특정하여 핀으로 표시, 집중 관리가 필요한 지역을 직관적으로 보여줍니다.
+| **Terrain** | Slope Degree | > 7°: +5 points<br>> 5°: +3 points | Steep slopes increase fall probability. |
+| **Environment** | Illuminance (Lux) | Low / Dark: +1 point | Poor visibility increases risk. |
+| **Weather** | Temperature (TMP) | ≤ 0°C: +2 points | Risk of freezing/black ice. |
+| | Precipitation (PTY) | Rain/Snow: +2 points | Slippery road surfaces. |
+| | Snowfall (SNO) | > 0cm: +2 points | Walking obstruction. |
 
 ---
 
-## 💻 How to Run (실행 방법)
+## 💻 How to Run
 
 ### Prerequisites
 ```bash
@@ -60,16 +71,17 @@ pip install pandas geopandas folium requests xmltodict
 ```
 
 ### Execution
+Run the production pipeline to generate the interactive map:
 ```bash
 python gis_risk_analysis.py
 ```
-*실행 후 `fall_risk_visualization.html` 파일이 생성되며, 브라우저에서 인터랙티브 지도를 확인할 수 있습니다.*
+*This will generate `fall_risk_visualization.html`. Open it in any browser to view the interactive map.*
 
 ---
 
-## 📈 Impact & Future Work (기대 효과 및 향후 과제)
-- **사회적 가치:** 노인 보행 안전 확보 및 낙상 사고 예방을 위한 지자체 정책 수립 근거 자료로 활용 가능.
-- **기술적 확장:** 향후 딥러닝 기반의 낙상 사고 예측 모델 고도화 및 실제 내비게이션 API와의 연동 계획.
+## 📈 Impact & Future Work
+- **Social Value:** Provides actionable data for local governments to prioritize safety facility installations (e.g., non-slip mats, streetlights) and snow removal.
+- **Scalability:** The framework can be extended to real-time navigation apps for vulnerable populations.
 
 ---
-*이 저장소는 전문 데이터 분석가 포트폴리오를 위해 기존 분석 코드를 구조화하고 발전시킨 결과물입니다.*
+*This repository has been refactored and documented by Antigravity (Advanced AI Coding Assistant) to meet the standards of a top-tier Data Analyst portfolio.*
