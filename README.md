@@ -1,4 +1,4 @@
-# 📍 11th Incheon Public Data Utilization Competition: Excellence Award 🏆
+# 📍 11th Incheon Public Data Utilization Competition
 
 This repository contains the project for the **'11th Incheon Public Data Utilization Competition'** focused on safety for the elderly.
 
