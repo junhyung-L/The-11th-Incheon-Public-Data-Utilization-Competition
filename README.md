@@ -2,7 +2,7 @@
 
 This repository contains the project for the **'11th Incheon Public Data Utilization Competition'** focused on safety for the elderly.
 
-The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Incheon city's GIS terrain data, street illuminance (lux), and real-time weather conditions to calculate a precise **Fall Risk Score** for elderly pedestrians.
+The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Incheon city's GIS terrain data, street illuminance (lux), and real-time weather conditions to calculate a **Rule-Based Fall Risk Score** for elderly pedestrians.
 
 ---
 
@@ -23,8 +23,9 @@ The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Inche
 
 ## 🔬 3. Risk Modeling & Methodology (위험도 모델링 및 방법론)
 
-- **Multi-Variable Risk Scoring Model**:
-  The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors.
+- **Heuristic Baseline Model (규칙 기반 베이스라인 모델)**:
+  - **Important Note**: Due to the lack of historical fall incident data (ground truth), this project implements a **heuristic rule-based scoring system** rather than a predictive machine learning model. This serves as a robust baseline for decision support.
+  - The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors based on domain knowledge.
 
 | Category | Variable | Condition / Weight | Description |
 | :--- | :--- | :---: | :--- |
@@ -35,7 +36,7 @@ The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Inche
 | | Snowfall (SNO) | > 0cm: +2 points | Walking obstruction. |
 
 - **Refactored Module**: `src/risk_calculator.py`
-  - Implements the heuristic risk scoring algorithm derived from exploratory analysis.
+  - Implements the heuristic risk scoring algorithm.
 
 ## 🖼️ 4. Visualization & Prototype (시각화 및 프로토타입)
 
@@ -52,12 +53,14 @@ The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Inche
 ![Map Visualization](images/지도_시각화.png)
 *Figure 2: Interactive map showing high-risk areas.*
 
-## 🏁 5. Conclusion & Business Impact (결론 및 비즈니스 임팩트)
+## 🏁 5. Conclusion & Future Work (결론 및 향후 과제)
 
-- **Outcome**: Successfully mapped the fall risk scores across Incheon's pedestrian network.
+- **Outcome**: Successfully mapped the fall risk scores across Incheon's pedestrian network using a rule-based approach.
 - **Analytical ROI**:
-  - **Social Value**: Provides actionable data for local governments to prioritize safety facility installations (e.g., non-slip mats, streetlights) and snow removal.
-  - **Scalability**: The framework can be extended to real-time navigation apps for vulnerable populations.
+  - **Social Value**: Provides actionable data for local governments to prioritize safety facility installations and snow removal.
+- **Future Work (Next Steps)**:
+  - **Transition to Machine Learning**: We plan to acquire actual historical fall incident data from medical centers or emergency services to train a classification model (e.g., XGBoost, Random Forest) to predict the actual probability of falls, moving beyond the heuristic score.
+  - **Model Validation**: Use confusion matrix and ROC-AUC to validate the predictive model once ground truth data is available.
 
 ---
 
@@ -65,15 +68,10 @@ The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Inche
 
 ```text
 ├── notebooks/                  # Original exploratory Jupyter notebooks
-│   ├── 노인낙상.ipynb
-│   ├── 조도_날씨.ipynb
-│   ├── 위험도계산_지도시각화.ipynb
-│   ├── 경사.ipynb
-│   └── 경사도계산.ipynb
 ├── src/                        # Refactored production-ready source code
 │   ├── data_loader.py          # GIS data loading and CRS conversion
 │   ├── weather.py              # KMA API integration
-│   ├── risk_calculator.py      # Multi-variable risk model
+│   ├── risk_calculator.py      # Heuristic risk model
 │   └── map_visualizer.py       # Folium heatmap generation
 ├── images/                     # Project screenshots and diagrams
 ├── data/                       # GIS Shapefiles (ignored if too large)
