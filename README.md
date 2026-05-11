@@ -105,4 +105,4 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 - **Junhyung L.** (Project Lead)
 
 ---
-*Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L).*
+*Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L/Resume/blob/main/Portfolio/README.md).*
