@@ -2,7 +2,16 @@
 
 This repository contains the project for the **'11th Incheon Public Data Utilization Competition'** focused on safety for the elderly.
 
-The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Incheon city's GIS terrain data, street illuminance (lux), and real-time weather conditions to calculate a **Rule-Based Fall Risk Score** for elderly pedestrians.
+## 🚀 Executive Summary (TL;DR)
+- **The Problem**: Elderly falls are a critical social issue, but navigation services only offer shortest paths, ignoring terrain and weather hazards.
+- **The Solution**: Developed a working prototype of a **"Minimum Risk Route"** service (Fallin) using a rule-based scoring system combining GIS terrain data and real-time weather.
+- **The Result**: Successfully mapped fall risks across Incheon's pedestrian network, serving as a robust baseline for future predictive ML models.
+
+## 🛠 Tech Stack
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![GeoPandas](https://img.shields.io/badge/GeoPandas-33A652?style=for-the-badge&logo=geopandas&logoColor=white)
+![Folium](https://img.shields.io/badge/Folium-77B829?style=for-the-badge&logo=folium&logoColor=white)
 
 ---
 
@@ -32,8 +41,11 @@ The project proposes a **"Minimum Risk Route"** service (Fallin) by fusing Inche
 | **Terrain** | Slope Degree | > 7°: +5 points<br>> 5°: +3 points | Calculated from contour lines using DEM interpolation. |
 | **Environment** | Illuminance (Lux) | Low / Dark: +1 point | Poor visibility increases risk. |
 | **Weather** | Temperature (TMP) | ≤ 0°C: +2 points | Risk of freezing/black ice. |
-| | Precipitation (PTY) | Rain/Snow: +2 points | Slippery road surfaces. |
+| | Precipitation (PTY) | Rain/Snow: +2 points | Slippery road surfaces (Type: 1, 2, 3). |
 | | Snowfall (SNO) | > 0cm: +2 points | Walking obstruction. |
+| | Humidity (REH) | ≥ 90%: +1 point | High humidity may cause condensation. |
+| | Precipitation Amt (PCP) | > 0mm: +1 point | Wet surfaces. |
+| | Wind Speed (WSD) | ≥ 5m/s: +1 point | Strong wind affecting balance. |
 
 - **Refactored Module**: `src/risk_calculator.py`
   - Implements the heuristic risk scoring algorithm.
