@@ -23,7 +23,7 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 - **Objective**: To develop a data-driven service that calculates and visualizes fall risks on pedestrian paths, providing safer routes for the elderly.
 - **Vision**: "Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."
 
-> ```mermaid
+```mermaid
 graph TD
     A[Public Data Portal <br> GIS Shapefiles] --> B[Data Loader]
     C[KMA API <br> Real-time Weather] --> D[Weather Module]
