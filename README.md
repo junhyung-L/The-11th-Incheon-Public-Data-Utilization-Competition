@@ -23,6 +23,23 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 - **Objective**: To develop a data-driven service that calculates and visualizes fall risks on pedestrian paths, providing safer routes for the elderly.
 - **Vision**: "Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."
 
+> ```mermaid
+graph TD
+    A[Public Data Portal <br> GIS Shapefiles] --> B[Data Loader]
+    C[KMA API <br> Real-time Weather] --> D[Weather Module]
+    E[Illuminance Data CSV] --> B
+    
+    B --> F[Coordinate Conversion <br> EPSG:4326]
+    F --> G[Data Fusion]
+    D --> G
+    
+    G --> H[Risk Calculator <br> Heuristic Scoring]
+    H --> I[Folium Map Visualizer]
+    I --> J[Interactive Risk Map]
+```
+
+---
+
 ## 📊 2. Data Acquisition & Preprocessing (데이터 수집 및 전처리)
 - **Multi-Source Data Fusion**:
   - **GIS Data**: Pedestrian paths and contour lines from the Public Data Portal.
