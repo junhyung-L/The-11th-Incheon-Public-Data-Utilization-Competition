@@ -86,8 +86,8 @@ graph TD
 - **Analytical ROI**:
   - **Social Value**: Provides actionable data for local governments to prioritize safety facility installations and snow removal.
 - **Future Work (Next Steps)**:
-  - **Transition to Machine Learning**: We plan to acquire actual historical fall incident data from medical centers or emergency services to train a classification model (e.g., XGBoost, Random Forest) to predict the actual probability of falls, moving beyond the heuristic score.
-  - **Model Validation**: Use confusion matrix and ROC-AUC to validate the predictive model once ground truth data is available.
+  - **Scalable Architecture for Supervised Learning**: While the current model relies on a heuristic score due to the lack of ground truth (historical fall incidents), the pipeline is designed to be fully scalable. Once actual incident data is acquired from medical centers or emergency services, this rule-based score can serve as a powerful **Baseline Feature** or **Pre-training Weight** for a supervised classification model (e.g., XGBoost, Random Forest).
+  - **Real-Time API Integration**: Expand the KMA API integration to provide real-time risk alerts via mobile apps for the elderly.
 
 ---
 
