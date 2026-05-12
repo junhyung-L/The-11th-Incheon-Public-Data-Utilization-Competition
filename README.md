@@ -25,17 +25,25 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 
 ```mermaid
 graph TD
-    A[Public Data Portal <br> GIS Shapefiles] --> B[Data Loader]
-    C[KMA API <br> Real-time Weather] --> D[Weather Module]
-    E[Illuminance Data CSV] --> B
-    
-    B --> F[Coordinate Conversion <br> EPSG:4326]
-    F --> G[Data Fusion]
-    D --> G
-    
-    G --> H[Risk Calculator <br> Heuristic Scoring]
-    H --> I[Folium Map Visualizer]
-    I --> J[Interactive Risk Map]
+    subgraph Data_Acquisition [1. Multi-Modal Data Ingestion]
+        A[Pedestrian Network GIS <br> 도로망 데이터]
+        B[KMA Weather API <br> 기상 데이터]
+        C[Demographics <br> 취약계층 인구]
+    end
+
+    subgraph Core_Processing [2. Heuristic Risk Modeling]
+        A & B & C --> D[Spatial Join & Grid Mapping <br> 공간 연산]
+        D --> E[Heuristic Fall Risk Score <br> 위험지수 산출]
+    end
+
+    subgraph Visualization_Action [3. GIS Visualization & Action]
+        E --> F[Folium Interactive Heatmap <br> 시각화]
+        F --> G[Priority Infrastructure Deployment <br> 지자체 의사결정]
+    end
+
+    style Data_Acquisition fill:#f9f,stroke:#333,stroke-width:2px
+    style Core_Processing fill:#bbf,stroke:#333,stroke-width:2px
+    style Visualization_Action fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
 ---
