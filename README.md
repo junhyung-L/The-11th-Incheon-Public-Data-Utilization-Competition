@@ -1,4 +1,8 @@
-# 📍 11th Incheon Public Data Utilization Competition
+# The 11th Incheon Public Data Utilization Competition: Fall Prevention for the Elderly
+
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![GeoPandas](https://img.shields.io/badge/GeoPandas-33A652?style=flat&logo=geopandas&logoColor=white)](https://geopandas.org/)
+[![Status](https://img.shields.io/badge/Status-Completed-success.svg)]()
 
 This repository contains the project for the **'11th Incheon Public Data Utilization Competition'** focused on safety for the elderly.
 
@@ -8,21 +12,18 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 - **The Result**: Successfully mapped fall risks across Incheon's pedestrian network, serving as a robust baseline for future predictive ML models.
 
 ## 🛠 Tech Stack
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
-![GeoPandas](https://img.shields.io/badge/GeoPandas-33A652?style=for-the-badge&logo=geopandas&logoColor=white)
-![Folium](https://img.shields.io/badge/Folium-77B829?style=for-the-badge&logo=folium&logoColor=white)
+- **GIS & Spatial Analysis**: GeoPandas
+- **Visualization**: Folium (Interactive Risk Maps)
+- **Data Processing**: Pandas, NumPy
 
 ---
 
 ## 📌 1. Problem Definition (문제 정의)
-
 - **Background**: As society enters a super-aged phase, elderly fall accidents are becoming a critical social issue. Traditional navigation services only offer the shortest path, ignoring safety hazards like steep slopes or slippery roads.
 - **Objective**: To develop a data-driven service that calculates and visualizes fall risks on pedestrian paths, providing safer routes for the elderly.
 - **Vision**: "Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."
 
 ## 📊 2. Data Acquisition & Preprocessing (데이터 수집 및 전처리)
-
 - **Multi-Source Data Fusion**:
   - **GIS Data**: Pedestrian paths and contour lines from the Public Data Portal.
   - **Weather Data**: Real-time short-term forecast (Temperature, Precipitation, Humidity) from the Korea Meteorological Administration (KMA) API.
@@ -31,7 +32,6 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
   - Handles loading of massive Shapefiles and ensures Coordinate Reference System (CRS) conversion to EPSG:4326 for visualization.
 
 ## 🔬 3. Risk Modeling & Methodology (위험도 모델링 및 방법론)
-
 - **Heuristic Baseline Model (규칙 기반 베이스라인 모델)**:
   - **Important Note**: Due to the lack of historical fall incident data (ground truth), this project implements a **heuristic rule-based scoring system** rather than a predictive machine learning model. This serves as a robust baseline for decision support.
   - The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors based on domain knowledge.
@@ -51,7 +51,6 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
   - Implements the heuristic risk scoring algorithm.
 
 ## 🖼️ 4. Visualization & Prototype (시각화 및 프로토타입)
-
 - **Interactive Risk Map**:
   - Developed an interactive risk heatmap using **Folium**.
   - High-risk areas are marked with specific pins to guide policy decisions and pedestrian awareness.
@@ -66,7 +65,6 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 *Figure 2: Interactive map showing high-risk areas.*
 
 ## 🏁 5. Conclusion & Future Work (결론 및 향후 과제)
-
 - **Outcome**: Successfully mapped the fall risk scores across Incheon's pedestrian network using a rule-based approach.
 - **Analytical ROI**:
   - **Social Value**: Provides actionable data for local governments to prioritize safety facility installations and snow removal.
@@ -77,7 +75,6 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 ---
 
 ## 📁 Repository Structure
-
 ```text
 ├── notebooks/                  # Original exploratory Jupyter notebooks
 ├── src/                        # Refactored production-ready source code
@@ -91,7 +88,6 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 ```
 
 ## ⚙️ How to Run
-
 1. Install dependencies:
    ```bash
    pip install pandas geopandas folium requests xmltodict
@@ -106,3 +102,4 @@ This repository contains the project for the **'11th Incheon Public Data Utiliza
 
 ---
 *Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L/Resume/blob/main/Portfolio/README.md).*
+
