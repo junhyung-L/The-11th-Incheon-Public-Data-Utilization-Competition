@@ -1,4 +1,4 @@
-# The 11th Incheon Public Data Utilization Competition: Fall Prevention for the Elderly
+# 🚶‍♂️ The 11th Incheon Public Data Utilization Competition: Fall Prevention for the Elderly
 
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![GeoPandas](https://img.shields.io/badge/GeoPandas-33A652?style=flat&logo=geopandas&logoColor=white)](https://geopandas.org/)
