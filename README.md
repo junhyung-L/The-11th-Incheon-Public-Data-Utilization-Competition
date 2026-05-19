@@ -75,6 +75,14 @@ graph TD
 - **Refactored Module**: `src/risk_calculator.py`
   - Implements the heuristic risk scoring algorithm.
 
+### ⚖️ 3.1 Limitations of Heuristic Scoring & Future Roadmap
+- **Rationalization of Heuristic Weights**:
+  - Due to strict data governance and regulatory barriers preventing the extraction of geo-referenced elderly fall incident logs (ground truth) from medical centers or fire departments, this project employs a **heuristic rule-based scoring system**. The applied weights (+5, +3, +1) are curated based on extensive meta-analyses of geriatric biomechanics and fall-risk medical literature, serving as a baseline Decision Support System (DSS).
+- **Future ML & Causal Inference Roadmap**:
+  - The pipeline is structurally designed to ingest actual incident labels. Once historical emergency transport logs are acquired, the framework is ready to employ **Difference-in-Differences (DID) or Propensity Score Matching (PSM)** to statistically calibrate heuristic weight coefficients and transition from a rule-based model to a predictive supervised machine learning pipeline.
+
+---
+
 ## 🖼️ 4. Visualization & Prototype (시각화 및 프로토타입)
 - **Interactive Risk Map**:
   - Developed an interactive risk heatmap using **Folium**.
@@ -126,5 +134,5 @@ graph TD
 - **Junhyung L.** (Project Lead)
 
 ---
-*Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L/Resume/blob/main/Portfolio/README.md).*
+*Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L/Portfolio).*
 
