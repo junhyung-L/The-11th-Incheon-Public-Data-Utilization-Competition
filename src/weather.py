@@ -1,15 +1,24 @@
 import logging
-import requests
-import xmltodict
 from datetime import datetime
+
+try:
+    from .config import WEATHER_API_KEY
+except ImportError:
+    from config import WEATHER_API_KEY
 
 class WeatherFetcher:
     """Handles fetching real-time weather data from KMA API or fallback sources."""
-    def __init__(self, api_key: str = None):
-        self.api_key = api_key or "rP3MkYGETA69zJGBhPwOnA"
+    def __init__(self, api_key: str | None = None):
+        self.api_key = api_key or WEATHER_API_KEY
 
     def fetch_current_weather(self, nx: int = 55, ny: int = 124) -> dict:
         """Fetches short-term weather forecast from KMA API."""
+        if not self.api_key:
+            logging.info("KMA_SERVICE_KEY is not set; using deterministic fallback weather.")
+            return self._get_fallback_weather()
+        import requests
+        import xmltodict
+
         logging.info("Fetching real-time weather data from KMA API...")
         url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
         

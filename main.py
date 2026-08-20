@@ -1,53 +1,47 @@
-"""
-Fall Risk Analysis - Main Orchestrator
-=====================================
+"""Command-line entry point for the Fallin heuristic-risk map prototype."""
 
-This script orchestrates the full pipeline for elderly fall risk analysis,
-importing modules from the src/ directory.
-"""
+from __future__ import annotations
 
-import os
+import argparse
 import logging
-from src.data_loader import GISDataLoader
-from src.weather import WeatherFetcher
-from src.risk_calculator import RiskCalculator
-from src.map_visualizer import MapVisualizer
+from pathlib import Path
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('risk_analysis.log', encoding='utf-8')
-    ]
-)
+from src.config import DATA_DIR, DEFAULT_SHAPEFILE, result_path
 
-def main():
-    DATA_DIR = "./data"
-    SHP_FILE = "인도_조도_경사도.shp"
-    OUTPUT_MAP = "fall_risk_visualization.html"
 
-    logging.info("Starting Fall Risk Analysis Pipeline...")
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Create a Fallin heuristic-risk map from a pedestrian shapefile.")
+    parser.add_argument("--shapefile", default=DEFAULT_SHAPEFILE)
+    parser.add_argument("--output-html", type=Path, default=result_path("fall_risk_visualization.html"))
+    parser.add_argument("--log-file", type=Path, default=result_path("risk_analysis.log"))
+    return parser
 
-    # 1. Load Data
-    loader = GISDataLoader(DATA_DIR)
-    gdf = loader.load_shapefile(SHP_FILE)
 
-    # 2. Fetch Weather
-    weather_fetcher = WeatherFetcher()
-    weather_data = weather_fetcher.fetch_current_weather()
+def configure_logging(log_file: Path) -> None:
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[logging.StreamHandler(), logging.FileHandler(log_file, encoding="utf-8")],
+        force=True,
+    )
 
-    # 3. Calculate Risk
-    calculator = RiskCalculator(weather_data)
-    gdf = calculator.apply_risk_modeling(gdf)
 
-    # 4. Visualize
-    visualizer = MapVisualizer(gdf)
-    visualizer.generate_map(OUTPUT_MAP)
+def main(args: argparse.Namespace) -> None:
+    from src.data_loader import GISDataLoader
+    from src.map_visualizer import MapVisualizer
+    from src.risk_calculator import RiskCalculator
+    from src.weather import WeatherFetcher
 
-    logging.info("Pipeline completed successfully!")
-    print(gdf[['risk_score', 'risk_level']].value_counts().sort_index())
+    configure_logging(args.log_file)
+    logging.info("Starting Fall Risk Analysis Pipeline")
+    gdf = GISDataLoader(DATA_DIR).load_shapefile(args.shapefile)
+    weather_data = WeatherFetcher().fetch_current_weather()
+    scored = RiskCalculator(weather_data).apply_risk_modeling(gdf)
+    MapVisualizer(scored).generate_map(args.output_html)
+    logging.info("Pipeline completed: %s", args.output_html)
+    print(scored[["risk_score", "risk_level"]].value_counts().sort_index())
+
 
 if __name__ == "__main__":
-    main()
+    main(build_parser().parse_args())

@@ -1,138 +1,73 @@
-# 🚶‍♂️ The 11th Incheon Public Data Utilization Competition: Fall Prevention for the Elderly
+# Heuristic GIS Fall-Risk Mapping for Older Pedestrians
 
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
-[![GeoPandas](https://img.shields.io/badge/GeoPandas-33A652?style=flat&logo=geopandas&logoColor=white)](https://geopandas.org/)
-[![Status](https://img.shields.io/badge/Status-Completed-success.svg)]()
+[한국어](README.ko.md)
 
-This repository contains the project for the **'11th Incheon Public Data Utilization Competition'** focused on safety for the elderly.
+> [Project details](PORTFOLIO.md)
 
-## 🚀 Executive Summary (TL;DR)
-- **The Problem**: Elderly falls are a critical social issue, but navigation services only offer shortest paths, ignoring terrain and weather hazards.
-- **The Solution**: Developed a working prototype of a **"Minimum Risk Route"** service (Fallin) using a rule-based scoring system combining GIS terrain data and real-time weather.
-- **The Result**: Successfully mapped fall risks across Incheon's pedestrian network, serving as a robust baseline for future predictive ML models.
+This repository implements a GIS-based prototype that assigns heuristic
+fall-risk scores to pedestrian segments from terrain, environment, and weather
+inputs. It is a decision-support exploration, not a validated predictive or
+clinical fall-risk model.
 
-## 🛠 Tech Stack
-- **GIS & Spatial Analysis**: GeoPandas
-- **Visualization**: Folium (Interactive Risk Maps)
-- **Data Processing**: Pandas, NumPy
-
----
-
-## 📌 1. Problem Definition (문제 정의)
-- **Background**: As society enters a super-aged phase, elderly fall accidents are becoming a critical social issue. Traditional navigation services only offer the shortest path, ignoring safety hazards like steep slopes or slippery roads.
-- **Objective**: To develop a data-driven service that calculates and visualizes fall risks on pedestrian paths, providing safer routes for the elderly.
-- **Vision**: "Prioritizing Safety Over Speed: A Data-Driven Approach to Preventing Elderly Falls."
+## Analysis flow
 
 ```mermaid
-graph TD
-    subgraph Data_Acquisition [1. Multi-Modal Data Ingestion]
-        A[Pedestrian Network GIS <br> 도로망 데이터]
-        B[KMA Weather API <br> 기상 데이터]
-        C[Demographics <br> 취약계층 인구]
-    end
-
-    subgraph Core_Processing [2. Heuristic Risk Modeling]
-        A & B & C --> D[Spatial Join & Grid Mapping <br> 공간 연산]
-        D --> E[Heuristic Fall Risk Score <br> 위험지수 산출]
-    end
-
-    subgraph Visualization_Action [3. GIS Visualization & Action]
-        E --> F[Folium Interactive Heatmap <br> 시각화]
-        F --> G[Priority Infrastructure Deployment <br> 지자체 의사결정]
-    end
-
-    style Data_Acquisition fill:#f9f,stroke:#333,stroke-width:2px
-    style Core_Processing fill:#bbf,stroke:#333,stroke-width:2px
-    style Visualization_Action fill:#bfb,stroke:#333,stroke-width:2px
+flowchart LR
+    A[Pedestrian GIS input] --> B[Load Shapefile and convert CRS]
+    C[KMA weather API<br/>or deterministic fallback] --> D[Weather fields]
+    B --> E[Rule-based risk scoring]
+    D --> E
+    E --> F[Risk level: Low / Medium / High]
+    F --> G[Folium HTML map]
 ```
 
----
+## Implemented approach
 
-## 📊 2. Data Acquisition & Preprocessing (데이터 수집 및 전처리)
-- **Multi-Source Data Fusion**:
-  - **GIS Data**: Pedestrian paths and contour lines from the Public Data Portal.
-  - **Weather Data**: Real-time short-term forecast (Temperature, Precipitation, Humidity) from the Korea Meteorological Administration (KMA) API.
-  - **Illuminance Data**: Streetlight and road brightness data (CSV).
-- **Refactored Module**: `src/data_loader.py`
-  - Handles loading of massive Shapefiles and ensures Coordinate Reference System (CRS) conversion to EPSG:4326 for visualization.
+- `src/data_loader.py` loads the supplied Shapefile and converts its CRS to
+  EPSG:4326 for display.
+- `src/weather.py` requests KMA weather when `KMA_SERVICE_KEY` is configured;
+  otherwise it returns a deterministic fallback scenario for demonstration.
+- `src/risk_calculator.py` applies explicit thresholds for slope, risk count,
+  illuminance when available, and weather fields including temperature,
+  precipitation, snowfall, humidity, and wind speed.
+- `src/map_visualizer.py` renders the scored segments to an HTML map.
 
-## 🔬 3. Risk Modeling & Methodology (위험도 모델링 및 방법론)
-- **Heuristic Baseline Model (규칙 기반 베이스라인 모델)**:
-  - **Important Note**: Due to the lack of historical fall incident data (ground truth), this project implements a **heuristic rule-based scoring system** rather than a predictive machine learning model. This serves as a robust baseline for decision support.
-  - The Fall Risk Score is calculated dynamically by combining static terrain data with dynamic environmental factors based on domain knowledge.
+The weights are hard-coded design assumptions, not coefficients calibrated on
+observed fall incidents. For example, slopes above 7 degrees add five points;
+rain or snow adds two points.
 
-| Category | Variable | Condition / Weight | Description |
-| :--- | :--- | :---: | :--- |
-| **Terrain** | Slope Degree | > 7°: +5 points<br>> 5°: +3 points | Calculated from contour lines using DEM interpolation. |
-| **Environment** | Illuminance (Lux) | Low / Dark: +1 point | Poor visibility increases risk. |
-| **Weather** | Temperature (TMP) | ≤ 0°C: +2 points | Risk of freezing/black ice. |
-| | Precipitation (PTY) | Rain/Snow: +2 points | Slippery road surfaces (Type: 1, 2, 3). |
-| | Snowfall (SNO) | > 0cm: +2 points | Walking obstruction. |
-| | Humidity (REH) | ≥ 90%: +1 point | High humidity may cause condensation. |
-| | Precipitation Amt (PCP) | > 0mm: +1 point | Wet surfaces. |
-| | Wind Speed (WSD) | ≥ 5m/s: +1 point | Strong wind affecting balance. |
+## Result boundary
 
-- **Refactored Module**: `src/risk_calculator.py`
-  - Implements the heuristic risk scoring algorithm.
+The workflow generates an HTML map and risk levels for the supplied GIS input.
+The repository retains no incident labels, ground-truth route outcomes, or
+predictive-validation results. It therefore does not establish that a score
+predicts falls or that a route reduces fall risk.
 
-### ⚖️ 3.1 Limitations of Heuristic Scoring & Future Roadmap
-- **Rationalization of Heuristic Weights**:
-  - Due to strict data governance and regulatory barriers preventing the extraction of geo-referenced elderly fall incident logs (ground truth) from medical centers or fire departments, this project employs a **heuristic rule-based scoring system**. The applied weights (+5, +3, +1) are curated based on extensive meta-analyses of geriatric biomechanics and fall-risk medical literature, serving as a baseline Decision Support System (DSS).
-- **Future ML & Causal Inference Roadmap**:
-  - The pipeline is structurally designed to ingest actual incident labels. Once historical emergency transport logs are acquired, the framework is ready to employ **Difference-in-Differences (DID) or Propensity Score Matching (PSM)** to statistically calibrate heuristic weight coefficients and transition from a rule-based model to a predictive supervised machine learning pipeline.
+## Run
 
----
+Install the listed dependencies, then supply a complete Shapefile dataset:
 
-## 🖼️ 4. Visualization & Prototype (시각화 및 프로토타입)
-- **Interactive Risk Map**:
-  - Developed an interactive risk heatmap using **Folium**.
-  - High-risk areas are marked with specific pins to guide policy decisions and pedestrian awareness.
-- **Refactored Module**: `src/map_visualizer.py`
-
-### Service Prototype
-![Service Prototype](images/서비스프로토타입_이미지.png)
-*Figure 1: Concept and UI flow for the Fallin service.*
-
-### Risk Map Visualization
-![Map Visualization](images/지도_시각화.png)
-*Figure 2: Interactive map showing high-risk areas.*
-
-## 🏁 5. Conclusion & Future Work (결론 및 향후 과제)
-- **Outcome**: Successfully mapped the fall risk scores across Incheon's pedestrian network using a rule-based approach.
-- **Analytical ROI**:
-  - **Social Value**: Provides actionable data for local governments to prioritize safety facility installations and snow removal.
-- **Future Work (Next Steps)**:
-  - **Scalable Architecture for Supervised Learning**: While the current model relies on a heuristic score due to the lack of ground truth (historical fall incidents), the pipeline is designed to be fully scalable. Once actual incident data is acquired from medical centers or emergency services, this rule-based score can serve as a powerful **Baseline Feature** or **Pre-training Weight** for a supervised classification model (e.g., XGBoost, Random Forest).
-  - **Real-Time API Integration**: Expand the KMA API integration to provide real-time risk alerts via mobile apps for the elderly.
-
----
-
-## 📁 Repository Structure
-```text
-├── notebooks/                  # Original exploratory Jupyter notebooks
-├── src/                        # Refactored production-ready source code
-│   ├── data_loader.py          # GIS data loading and CRS conversion
-│   ├── weather.py              # KMA API integration
-│   ├── risk_calculator.py      # Heuristic risk model
-│   └── map_visualizer.py       # Folium heatmap generation
-├── images/                     # Project screenshots and diagrams
-├── data/                       # GIS Shapefiles (ignored if too large)
-└── main.py                     # Master pipeline runner
+```powershell
+pip install -r requirements.txt
+python main.py --shapefile "path\\to\\pedestrian_network.shp"
 ```
 
-## ⚙️ How to Run
-1. Install dependencies:
-   ```bash
-   pip install pandas geopandas folium requests xmltodict
-   ```
-2. Run the full pipeline:
-   ```bash
-   python main.py
-   ```
+Set `KMA_SERVICE_KEY` to use the KMA API. Without it, the output uses the
+deterministic fallback weather scenario. The command writes an HTML map and a
+run log under `results/`.
 
-## 👥 Contributors
-- **Junhyung L.** (Project Lead)
+## Limitations
 
----
-*Refactored and polished to meet professional software engineering standards for the [Data Analyst Portfolio](https://github.com/junhyung-L/Portfolio).*
+- The retained GIS inputs do not include enough Shapefile sidecar files or
+  source metadata to establish dataset coverage and segment counts.
+- Rule weights have no retained calibration study or citations in this
+  repository.
+- No incident labels, spatial validation, field evaluation, or policy outcome
+  evaluation is implemented.
+- Live-service behaviour is not validated; the API fallback is for
+  demonstration only.
 
+## Documentation
+
+- [Portfolio case study](PORTFOLIO.md)
+- [Project review](docs/PROJECT_REVIEW.md)
